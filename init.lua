@@ -96,10 +96,10 @@ end
 setmetatable(Panes, { __index = Root })
 
 local DualPane = {
-  pane = nil,
-  left = nil,
-  right = nil,
-  view = nil,    -- 0 = dual, 1 = current zoomed 
+	pane = nil,
+	left = nil,
+	right = nil,
+	view = nil, -- 0 = dual, 1 = current zoomed
 
 	old_root_layout = nil,
 	old_root_build = nil,
@@ -107,19 +107,21 @@ local DualPane = {
 	old_header_cwd = nil,
 	old_header_tabs = nil,
 
-  _create = function(self)
-    self.pane = 0
-    if cx then
-      self.left = cx.tabs.idx - 1
-      if #cx.tabs > 1 then
-        self.right = (self.left + 1) % #cx.tabs
-      else
-        self.right = self.left
-      end
-    else
-      self.left = 0
-      self.right = 0
-    end
+	_header_tab_inc = 0,
+
+	_create = function(self)
+		self.pane = 0
+		if cx then
+			self.left = cx.tabs.idx - 1
+			if #cx.tabs > 1 then
+				self.right = (self.left + 1) % #cx.tabs
+			else
+				self.right = self.left
+			end
+		else
+			self.left = 0
+			self.right = 0
+		end
 
 		self.old_root_layout = Root.layout
 		self.old_root_build = Root.build
@@ -143,7 +145,7 @@ local DualPane = {
 		self.old_header_tabs = Header.tabs
 
 		Header:children_remove(2, Header.RIGHT)
-		Header:children_add(function(self)
+		self._header_tab_inc = Header:children_add(function(self)
 			local active = self._tab.idx == cx.tabs.idx
 			return ui.Line(" " .. self._tab.idx .. " ")
 				:style(active and THEME.manager.tab_active or THEME.manager.tab_inactive)
@@ -159,6 +161,9 @@ local DualPane = {
 		self.old_header_cwd = nil
 		Header.tabs = self.old_header_tabs
 		self.old_header_tabs = nil
+
+		Header:children_remove(self._header_tab_inc, Header.RIGHT)
+		Header:children_add("tabs", 2, Header.RIGHT)
 	end,
 
 	_config_dual_pane = function(self)
@@ -331,9 +336,9 @@ local function entry(_, args)
 end
 
 local function setup(_, opts)
-  if opts and opts.enabled then
-    DualPane:toggle()
-  end
+	if opts and opts.enabled then
+		DualPane:toggle()
+	end
 end
 
 return {
