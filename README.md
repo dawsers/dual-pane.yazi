@@ -1,12 +1,12 @@
 # dual-pane.yazi
 
 [dual-pane.yazi](https://github.com/dawsers/dual-pane.yazi) provides simple
-dual pane navigation for [yazi](https://github.com/sxyazi/yazi/), in a similar
-fashion to [vifm](https://github.com/vifm/vifm) or [midnight commander](https://midnight-commander.org/).
+dual pane navigation for [Yazi](https://github.com/sxyazi/yazi/), in a similar
+fashion to [Vifm](https://github.com/vifm/vifm) or [Midnight Commander](https://midnight-commander.org/).
 
 ## Requirements
 
-[yazi](https://github.com/sxyazi/yazi) v0.3.
+- [Yazi nightly build](https://github.com/sxyazi/yazi/releases/tag/nightly) is required ATM.
 
 ## Installation
 
@@ -16,7 +16,7 @@ ya pack -a dawsers/dual-pane
 
 Modify your `~/.config/yazi/init.lua` to include:
 
-``` lua
+```lua
 require("dual-pane"):setup()
 ```
 
@@ -38,12 +38,12 @@ The plugin needs to overwrite several key bindings to work well.
 
 Choose your own key bindings or use these in your `~/.config/yazi/keymap.toml`:
 
-``` toml
+```toml
 [manager]
 prepend_keymap = [
     { on = "B", run = "plugin --sync dual-pane --args=toggle", desc = "Dual-pane: toggle" },
     { on = "b", run = "plugin --sync dual-pane --args=toggle_zoom", desc = "Dual-pane: toggle zoom" },
-    { on = "<Tab>", run = "plugin --sync dual-pane --args=next_pane",  desc = "Dual-pane: switch to the other pane" },
+    { on = "<Tab>", run = "tab_switch 1 --relative",  desc = "Dual-pane: switch to the other pane" },
     { on = "[", run = "plugin --sync dual-pane --args='tab_switch -1 --relative'",  desc = "Dual-pane: switch active to previous tab" },
     { on = "]", run = "plugin --sync dual-pane --args='tab_switch 1 --relative'",  desc = "Dual-pane: switch active to next tab" },
     { on = "t", run = "plugin --sync dual-pane --args='tab_create --current'",  desc = "Dual-pane: create a new tab with CWD" },
@@ -54,26 +54,25 @@ prepend_keymap = [
 
 ### Commands
 
-| Command                | Arguments                       | Description                                   |
-|------------------------|---------------------------------|-----------------------------------------------|
-| `toggle`               |                                 | Enable/disable dual pane                      |
-| `toggle_zoom`          |                                 | While in dual pane, zoom into the active pane |
-| `next_pane`            |                                 | Make the other pane the active one            |
-| `tab_switch`           | `[n]` and possibly `--relative` | Same as yazi's `tab_switch`                   |
-| `tab_create`           | `[path]`, `--current` or none   | Same as yazi's `tab_create`                   |
-| `copy_files`           | `--force`, `--follow`           | Arguments like yazi's `paste`. Copies the selected or hovered file(s) from the current pane to the other one    |
-| `move_files`           | `--force`, `--follow`           | Arguments like yazi's `paste`. Moves the selected or hovered file(s) from the current pane to the other one, deleting the original ones   |
+| Command       | Arguments                       | Description                                                                                                                             |
+| ------------- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `toggle`      |                                 | Enable/disable dual pane                                                                                                                |
+| `toggle_zoom` |                                 | While in dual pane, zoom into the active pane                                                                                           |
+| `tab_switch`  | `[n]` and possibly `--relative` | Same as Yazi's `tab_switch`                                                                                                             |
+| `tab_create`  | `[path]`, `--current` or none   | Same as Yazi's `tab_create`                                                                                                             |
+| `copy_files`  | `--force`, `--follow`           | Arguments like Yazi's `paste`. Copies the selected or hovered file(s) from the current pane to the other one                            |
+| `move_files`  | `--force`, `--follow`           | Arguments like Yazi's `paste`. Moves the selected or hovered file(s) from the current pane to the other one, deleting the original ones |
 
 ### Tutorial
 
 This short tutorial is based on the key bindings above, but you can create
 your own.
 
-When you start yazi, you can start *dual-pane* by pressing `B`. It will create
+When you start Yazi, you can start _dual-pane_ by pressing `B`. It will create
 a dual pane view with the current directory on both panes if there is only one
 tab open, or the first and second tabs if there are more than one.
 
-`B` will exit *dual-pane* again (it is a toggle), while pressing `b` will still
+`B` will exit _dual-pane_ again (it is a toggle), while pressing `b` will still
 keep you in dual pane mode, but zooming the active pane for better visibility.
 For example, you could use [toggle-view.yazi](https://github.com/dawsers/toggle-view.yazi)
 to toggle on/off the preview or parent directory if you want more details.
@@ -84,7 +83,7 @@ pane will be colored differently for better visibility.
 While in one of the panes, `[` and `]` will move the active tab back and
 forth. The tab indicator for each pane will mark the selected one.
 
-`t` will create a new tab with the current directory as *cwd*.
+`t` will create a new tab with the current directory as _cwd_.
 
 `<F5>` will copy the selected files (or the hovered one if there are none
 selected) from the active pane, to the current directory of the other pane.
@@ -92,10 +91,10 @@ selected) from the active pane, to the current directory of the other pane.
 `<F6>` will move the selected files (or the hovered one if there are none
 selected) from the active pane, to the current directory of the other pane.
 
-I also use global *marks* defined in *keymap.toml* to navigate quickly to
+I also use global _marks_ defined in _keymap.toml_ to navigate quickly to
 frequent directories, like this:
 
-``` toml
+```toml
 [namager]
 prepend_keymap = [
     { on = [ "'", "<Space>" ], run = "cd --interactive",   desc = "Go to a directory interactively" },
@@ -108,7 +107,7 @@ prepend_keymap = [
 
 backward and forward keys like in vim:
 
-``` toml
+```toml
 [namager]
 prepend_keymap = [
     # Backward/Forward
@@ -119,7 +118,7 @@ prepend_keymap = [
 
 [fuse-archive.yazi](https://github.com/dawsers/fuse-archive.yazi)
 
-``` toml
+```toml
 [namager]
 prepend_keymap = [
     # fuse-archive
@@ -130,7 +129,7 @@ prepend_keymap = [
 
 and [toggle-view.yazi](https://github.com/dawsers/toggle-view.yazi)
 
-``` toml
+```toml
 [namager]
 prepend_keymap = [
     { on = "<C-1>", run = "plugin --sync toggle-view --args=parent", desc = "Toggle parent" },
@@ -139,10 +138,9 @@ prepend_keymap = [
 ]
 ```
 
-There may be some incompatibilities between *dual-pane* and certain plugins or
-yazi commands. The reason is this plugin is not integrated in the core, and needs
+There may be some incompatibilities between _dual-pane_ and certain plugins or
+Yazi commands. The reason is this plugin is not integrated in the core, and needs
 to hijack certain procedures to work as seamlessly as possible.
-
 
 ## Additional Plugins for Extended Functionality
 
