@@ -149,7 +149,7 @@ local DualPane = {
 			local active = self._tab.idx == cx.tabs.idx
 			return ui.Line(" " .. self._tab.idx .. " ")
 				:style(active and THEME.manager.tab_active or THEME.manager.tab_inactive)
-		end, 2, Header.RIGHT)
+		end, 2500, Header.RIGHT)
 	end,
 
 	_destroy = function(self)
@@ -163,7 +163,7 @@ local DualPane = {
 		self.old_header_tabs = nil
 
 		Header:children_remove(self._header_tab_inc, Header.RIGHT)
-		Header:children_add("tabs", 2, Header.RIGHT)
+		Header:children_add("tabs", 2000, Header.RIGHT)
 	end,
 
 	_config_dual_pane = function(self)
